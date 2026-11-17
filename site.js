@@ -9,5 +9,5 @@ export const SITE = {
   city: '',
   email: 'lucas.a.r.stanley@gmail.com',
   linkedin: '',             // full URL
-  ask: 'I\'m at Jellyfish and happy there. If you want to talk about a film, or about making work this way, write to me.',
+  ask: '',                 // a line above the form; empty leaves it out
 };

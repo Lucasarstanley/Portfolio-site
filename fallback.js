@@ -1,7 +1,7 @@
 // The film list as plain HTML: for screen readers and search always, and on its own if the scene cannot run.
 // Loaded separately from main.js so it survives a CDN or WebGL failure.
 import { FILMS } from './films.js?v=22';
-import { SITE } from './site.js?v=2';
+import { SITE } from './site.js?v=3';
 
 const list = document.createElement('section');
 list.id = 'film-list'; list.className = 'film-list'; list.setAttribute('aria-label', 'Films');

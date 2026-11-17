@@ -5,7 +5,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { FILMS } from './films.js?v=22';
-import { SITE } from './site.js?v=2';
+import { SITE } from './site.js?v=3';
 import { PROP_SETS, SET_ORDER } from './sets.js?v=4';
 import { PROP_KINDS, buildCowParts } from './props.js?v=3';
 import * as opentype from 'opentype';
@@ -2153,7 +2153,7 @@ const spell = { active: false, members: [], points: [], since: 0 };
 const spellTask = (p) => ({ kind: 'go', x: p.x, z: p.z, pose: { arms: 1 }, walkPose: {}, speed: B.hypeSpeed, face: p.face, arrive: 0.35, pin: true, noSep: true, spellPt: true });
 function updateSpell(dt) {
   const S = V.spell;
-  const want = cam.area === 'home' && party.target === 1 && clock - party.since > S.after;
+  const want = cam.area === 'home' && party.target === 1 && clock - party.since > S.after && !isNarrow() && !isTouch; // not on phones: no room above the name, and the letters never settle
   if (spell.active && !want) { for (const a of spell.members) release(a); spell.members = []; spell.points = []; spell.active = false; return; }
   if (spell.active) {
     // failsafe: a point whose figure lost its task gets it back; a figure still on its way late in the day is let straight
