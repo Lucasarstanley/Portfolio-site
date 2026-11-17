@@ -41,7 +41,7 @@ Touch devices have no hover, so the site runs itself more and answers scroll and
 
 ## Deploy
 
-Vercel, by drag-and-drop at https://vercel.com/drop (signed in to a free Hobby account, so the project keeps its name): drag the upload folder, name the project `lucas-stanley`, Deploy; the site is at https://lucas-stanley.vercel.app/. Later changes: drop the folder onto the project in the Vercel dashboard, which makes a new production deployment. The upload folder is a clean copy of this one without `README.md` and `tools/`, remade with
+Vercel, by drag-and-drop at https://vercel.com/drop (signed in to a free Hobby account, so the project keeps its name): drag the upload folder, name the project `lucas-stanley`, Deploy; the site is at https://lucas-stanley.vercel.app/. This folder is a git repository pushed to the private GitHub repo Lucasarstanley/Portfolio-site; once the Vercel project is connected to it, every push to `main` goes live on its own (commit, push, done). `.vercelignore` keeps `README.md` and `tools/` out of each deployment. Dropping the folder onto the project in the Vercel dashboard still works as a manual deploy. The upload folder is a clean copy of this one without `README.md` and `tools/`, remade with
 
     rsync -a --delete --exclude README.md --exclude tools --exclude .DS_Store --exclude __pycache__ ./ "../OUTPUTS/Portfolio site/upload 2026-11-17/lucas-stanley-site/"
 
