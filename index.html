@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lucas Stanley</title>
+  <meta name="description" content="Lucas Stanley, creative lead and film director at Jellyfish. Films made with AI for Airbnb, Google, Apple and others, and two short films of his own.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Lucas Stanley">
+  <meta property="og:description" content="Creative lead and film director at Jellyfish. Films made with AI for Airbnb, Google, Apple and others, and two short films of his own.">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- The address the site is published at. Change these three when it moves to its own domain. og.jpg is the home-screen still (1200 x 630), made with window.__stage.snapshot() under ?debug. -->
+  <link rel="canonical" href="https://lucas-stanley.vercel.app/">
+  <meta property="og:url" content="https://lucas-stanley.vercel.app/">
+  <meta property="og:image" content="https://lucas-stanley.vercel.app/og.jpg">
+  <!-- Keeps the site out of search results while it is only shared by link. Delete this line to let it be found. -->
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#e2e3e6">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=20">
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+        "opentype": "https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="stage" aria-hidden="true"></canvas>
+
+  <nav class="corners">
+    <div class="top-left">
+      <a id="nav-home" class="corner corner-home" href="#" data-go="home" data-mood="home" data-anchor="home">Lucas Stanley</a>
+      <a id="nav-about" class="corner corner-about" href="#about" data-mood="about" data-anchor="about" data-go="about" data-text="About">About</a>
+    </div>
+    <a id="nav-contact" class="corner corner-contact" href="#contact" data-mood="contact" data-anchor="contact" data-go="contact" data-text="Contact">Contact</a>
+    <div class="bottom-nav">
+      <a id="nav-work" class="corner corner-work" href="#work" data-mood="work" data-anchor="work" data-go="work" data-text="Work">Work</a>
+      <a id="nav-shorts" class="corner corner-work" href="#shorts" data-mood="work" data-anchor="shorts" data-go="shorts" data-text="Short films">Short films</a>
+    </div>
+  </nav>
+  <div id="scrollmark" class="scrollmark" hidden><span></span></div>
+
+  <div id="plays" class="plays"></div>
+
+  <div id="about-text" class="about-text" hidden><h2>About</h2></div>
+  <p id="about-start" class="about-start" hidden>Start with <a href="#" data-film="nectar">Nectar</a>, <a href="#" data-film="airbnb">Airbnb</a> or <a href="#" data-film="gren">Gren</a></p>
+
+  <form id="contact-form" class="contact-form" hidden autocomplete="on">
+    <h2>Say hello</h2>
+    <p id="contact-ask" class="contact-ask" hidden></p>
+    <label><span>Name</span><input name="name" type="text" required></label>
+    <label><span>Email</span><input name="email" type="email" required></label>
+    <label><span>Message</span><textarea name="message" rows="4" required></textarea></label>
+    <button type="submit">Send</button>
+    <p id="contact-details" class="contact-details" hidden></p>
+  </form>
+
+  <div id="player" class="player" hidden>
+    <button class="player-close" type="button" aria-label="Close">Close</button>
+    <video controls playsinline preload="metadata"></video>
+    <nav id="player-episodes" class="player-episodes" aria-label="Episodes" hidden></nav>
+  </div>
+
+  <div id="debug" class="debug" hidden></div>
+  <noscript><p class="noscript">This site needs JavaScript. Lucas Stanley is a creative lead and film director; the films are listed at films/ and the contact details are in site.js.</p></noscript>
+  <script type="module" src="fallback.js?v=5"></script>
+  <script type="module" src="main.js?v=73"></script>
+</body>
+</html>

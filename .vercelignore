@@ -1,0 +1,5 @@
+# Not part of the published site. Vercel leaves these out of each deployment.
+README.md
+tools/
+.gitignore
+.vercelignore

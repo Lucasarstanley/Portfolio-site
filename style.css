@@ -1,0 +1,266 @@
+:root {
+  --fg: rgba(20, 24, 36, 0.72);
+  --fg-strong: #10141e;
+  --fg-dim: rgba(20, 24, 36, 0.38);
+  --font: Inter, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --pad: clamp(20px, 3vw, 40px);
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  color: var(--fg);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.corners a,
+.name {
+  position: fixed;
+  z-index: 2;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.55), 0 0 2px rgba(255, 255, 255, 0.35);
+  transition: color 180ms ease, transform 140ms ease-out;
+  will-change: transform;
+}
+
+.corner { top: var(--pad); padding: 4px 3px; margin: -4px -3px; } /* a hair beyond the letters; main.js brightens Work and Contact as the light passes over */
+/* one slot top left: About at home, the name (the way back) everywhere else */
+.top-left { position: fixed; z-index: 2; top: var(--pad); left: var(--pad); white-space: nowrap; }
+.corners a.corner-home, .corners a.corner-about { position: absolute; left: 0; top: 0; opacity: 0; pointer-events: none; transition: opacity 300ms ease, color 180ms ease; }
+.corners a.corner-home.show, .corners a.corner-about.show { opacity: 1; pointer-events: auto; }
+/* the name is always top left: a dim label at home, the way back everywhere else */
+.corner-contact { right: var(--pad); }
+.bottom-nav {
+  position: fixed; z-index: 2;
+  bottom: calc(var(--pad) + env(safe-area-inset-bottom, 0px));
+  left: 50%; transform: translateX(-50%);
+  display: flex; gap: 48px; white-space: nowrap;
+}
+.corners a.corner-work { position: relative; top: auto; }
+
+/* a slight white shimmer that sweeps over the words now and then, on the home screen */
+.corners a.corner-contact[data-text] { position: fixed; }
+.corner[data-text]::after {
+  content: attr(data-text) / ''; /* decorative: screen readers skip it */
+  position: absolute; left: 0; top: 0; padding: inherit;
+  color: transparent; pointer-events: none;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0) 62%);
+  background-size: 260% 100%; background-position: 120% 0;
+  -webkit-background-clip: text; background-clip: text;
+  opacity: 0;
+}
+body.home .corner[data-text]::after { animation: shimmer 7s ease-in-out infinite; }
+#nav-shorts::after { animation-delay: 1.75s; }
+#nav-contact::after { animation-delay: 3.5s; }
+#nav-about::after { animation-delay: 5.25s; }
+@keyframes shimmer {
+  0% { background-position: 120% 0; opacity: 1; }
+  22% { background-position: -40% 0; opacity: 1; }
+  23%, 100% { background-position: -40% 0; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { body.home .corner[data-text]::after { animation: none; } }
+.corner.active { color: var(--fg-dim); pointer-events: none; }
+body.over-film #stage { cursor: pointer; }
+.corner:hover, .corner:focus-visible { color: var(--fg-strong); outline: none; }
+
+.scrollmark {
+  position: fixed; z-index: 2;
+  right: 10px; top: 12vh; height: 76vh; width: 2px;
+  background: rgba(20, 24, 36, 0.12);
+  pointer-events: none;
+}
+.scrollmark[hidden] { display: none; }
+.scrollmark span { position: absolute; left: 0; width: 100%; background: rgba(20, 24, 36, 0.55); border-radius: 1px; }
+
+.debug {
+  position: fixed;
+  z-index: 3;
+  left: var(--pad);
+  bottom: var(--pad);
+  font: 11px/1.5 ui-monospace, Menlo, monospace;
+  color: rgba(20, 24, 36, 0.6);
+  white-space: pre;
+  pointer-events: none;
+}
+
+/* Plain inner pages */
+.page {
+  overflow: auto;
+  height: auto;
+  min-height: 100%;
+  --fg: rgba(255, 255, 255, 0.72);
+  --fg-strong: #ffffff;
+  --fg-dim: rgba(255, 255, 255, 0.32);
+}
+.page main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: calc(var(--pad) * 3) var(--pad) calc(var(--pad) * 2);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.page .corner-home { left: var(--pad); }
+.page h1 { font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--fg-dim); font-weight: 500; margin: 0 0 2em; }
+.page a { color: var(--fg-strong); text-decoration: none; border-bottom: 1px solid var(--fg-dim); }
+.page a:hover { border-color: var(--fg-strong); }
+.films { list-style: none; padding: 0; margin: 0; }
+.films li { padding: 1.2em 0; border-top: 1px solid rgba(255,255,255,0.1); }
+.films .meta { color: var(--fg-dim); font-size: 13px; letter-spacing: 0.08em; }
+.films .idea { color: var(--fg-strong); }
+.films .note { color: var(--fg); font-size: 14px; margin-top: 0.4em; }
+
+/* ---- v5: world navigation, work column, contact ---- */
+.name { cursor: pointer; }
+
+.plays { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+.play {
+  position: absolute;
+  left: 0; top: 0;
+  width: 56px; height: 56px; margin: -28px 0 0 -28px;
+  border-radius: 50%;
+  background: rgba(16, 20, 30, 0.82);
+  border: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  display: grid; place-items: center;
+  transition: transform 160ms ease, background 160ms ease;
+}
+.play::after {
+  content: "";
+  width: 0; height: 0;
+  margin-left: 4px;
+  border-style: solid;
+  border-width: 9px 0 9px 15px;
+  border-color: transparent transparent transparent #fff;
+}
+.play:hover, .play:focus-visible { transform: scale(1.12); background: #10141e; outline: none; }
+.play[hidden] { display: none; }
+
+.contact-form {
+  position: fixed;
+  z-index: 2;
+  width: min(380px, calc(100vw - 2 * var(--pad)));
+  transform: translate(-50%, -50%);
+  padding: 22px 24px 20px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  border-radius: 6px;
+  color: var(--fg-strong);
+  font-family: Inter, var(--font);
+  box-shadow: 0 20px 60px rgba(20, 24, 36, 0.18);
+}
+.contact-form[hidden] { display: none; }
+.contact-form h2 { margin: 0 0 14px; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; color: var(--fg); }
+.contact-form label { display: block; margin-bottom: 10px; font-size: 12px; color: var(--fg); }
+.contact-form label span { display: block; margin-bottom: 4px; letter-spacing: 0.08em; text-transform: uppercase; font-size: 10px; }
+.contact-form input, .contact-form textarea {
+  width: 100%; box-sizing: border-box;
+  font: 14px/1.4 Inter, var(--font);
+  padding: 8px 10px;
+  border: 1px solid rgba(20, 24, 36, 0.2);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--fg-strong);
+}
+.contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--fg-strong); }
+.contact-form button {
+  font: 500 12px/1 Inter, var(--font); letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 11px 18px; border: 0; border-radius: 3px;
+  background: var(--fg-strong); color: #fff; cursor: pointer;
+}
+.contact-form button:hover { background: #000; }
+
+.player {
+  position: fixed; inset: 0; z-index: 10;
+  background: rgba(0, 0, 0, 0.94);
+  display: grid; place-items: center;
+}
+.player[hidden] { display: none; }
+.player video { max-width: min(92vw, 1400px); max-height: 86vh; background: #000; outline: none; }
+.player-close {
+  position: absolute; top: var(--pad); right: var(--pad);
+  font: 500 12px/1 Inter, var(--font); letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8); background: transparent; border: 0; cursor: pointer; padding: 10px;
+}
+.player-close:hover { color: #fff; }
+
+/* The film list: there for screen readers and search; shown on its own if WebGL or the scripts fail */
+.film-list { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+body.fallback #stage, body.fallback .corners, body.fallback .plays, body.fallback .scrollmark { display: none; }
+body.fallback { background: #f1f0ed; color: #10141e; }
+body.fallback .film-list {
+  position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal;
+  max-width: 640px; margin: 0 auto; padding: 48px var(--pad); font-family: Inter, var(--font);
+}
+.film-list h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; }
+.film-list p.lead { margin: 0 0 28px; opacity: 0.8; }
+.film-list ul { list-style: none; padding: 0; margin: 0; }
+.film-list li { margin: 0 0 22px; }
+.film-list li strong { display: block; font-weight: 600; }
+.film-list li small { display: block; opacity: 0.7; margin-bottom: 4px; }
+.film-list a { color: inherit; }
+.noscript { max-width: 640px; margin: 48px auto; padding: 0 var(--pad); font-family: Inter, var(--font); color: #10141e; }
+
+/* Contact: the ask above the fields, the details under the button (both filled from site.js) */
+.contact-form .contact-ask { margin: 0 0 16px; font-size: 13px; line-height: 1.55; color: var(--fg-strong); }
+.contact-form .contact-ask[hidden], .contact-form .contact-details[hidden] { display: none; }
+.contact-form .contact-details { margin: 16px 0 0; font-size: 12px; line-height: 1.5; color: var(--fg); }
+.contact-form .contact-details a { color: var(--fg-strong); }
+.contact-form .contact-details i { font-style: normal; opacity: 0.5; padding: 0 2px; }
+.contact-form button:disabled { opacity: 0.35; cursor: default; }
+
+/* About: a way into the films, in the nav words' style, under the text on the floor */
+.about-start {
+  position: fixed; z-index: 2; margin: 0; transform: translate(-50%, 0);
+  font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; white-space: nowrap;
+  color: var(--fg); text-shadow: 0 0 10px rgba(255, 255, 255, 0.55), 0 0 2px rgba(255, 255, 255, 0.35);
+}
+.about-start[hidden] { display: none; }
+@media (max-width: 700px), (max-aspect-ratio: 9/10) { .about-start { white-space: normal; width: calc(100vw - 2 * var(--pad)); text-align: center; line-height: 1.8; } } /* phones: the line wraps, centred under the About block */
+.about-start a { color: var(--fg-strong); text-decoration: none; border-bottom: 1px solid rgba(16, 20, 30, 0.3); transition: border-color 180ms ease; }
+.about-start a:hover { border-bottom-color: var(--fg-strong); }
+
+/* Player: episode buttons for an entry that holds several films */
+.player-episodes { position: absolute; bottom: calc(var(--pad) + 2px); left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+.player-episodes[hidden] { display: none; }
+.player:has(.player-episodes:not([hidden])) video { max-height: 76vh; }
+.player-episodes button {
+  font: 500 12px/1 Inter, var(--font); letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6); background: transparent; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 3px;
+  padding: 9px 12px; cursor: pointer;
+}
+.player-episodes button:hover { color: #fff; border-color: rgba(255, 255, 255, 0.6); }
+.player-episodes button[aria-current="true"] { color: #fff; border-color: #fff; }
+
+/* About on a phone: an HTML block in the contact form's style, placed each frame by main.js; hidden on wider windows (the text lies on the floor there) */
+.about-text {
+  position: fixed; z-index: 2;
+  width: min(420px, calc(100vw - 2 * var(--pad)));
+  transform: translate(-50%, -50%);
+  padding: 20px 22px 18px; box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  border-radius: 6px;
+  color: var(--fg-strong);
+  font-family: Inter, var(--font);
+  box-shadow: 0 20px 60px rgba(20, 24, 36, 0.18);
+}
+.about-text[hidden] { display: none; }
+.about-text h2 { margin: 0 0 12px; font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; color: var(--fg); }
+.about-text p { margin: 0 0 12px; font-size: 14px; line-height: 1.55; }
+.about-text p:last-child { margin-bottom: 0; }
